@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>sort 函数</title>
+</head>
+<body>
+	<script type="text/javascript">
+		/*
+		const sortPropArr = [
+		  { id: 1, name: 'Jax' }, 
+		  { id: 4, name: 'Jim' }, 
+		  { id: 3, name: 'Joy' },
+		  { id: 2, name: 'Jay' }]
+		  */
+		var sortPropArr =['Jax','Jim','Joy','Jay'];
+		document.write(sortPropArr.sort()+"<br>");
+		var arr =[1,4,3,2];
+		document.write(arr.sort(function(a,b){
+			return a-b;
+		}));
+	</script>
+</body>
+</html>
+		

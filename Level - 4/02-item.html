@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组去重</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		var repeatPropArr=['1','2','2','abc','abc','xxx','2',1,false,true]; 
+		for(var i=0;i<repeatPropArr.length;i++){    
+			for(var j=i+1;j<repeatPropArr.length;j++){      
+				if(repeatPropArr[i]===repeatPropArr[j]){        
+					repeatPropArr.splice(i,1);        
+					i--;      
+				}    
+			}  
+		}  
+		alert(repeatPropArr); 
+	</script>
+</body>
+</html>
