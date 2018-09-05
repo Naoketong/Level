@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>中位数、众数、平均数、总数</title>
+	<style>body{padding:100px 0 0 500px;}</style>
+</head>
+<body>
+	<script type="text/javascript">
+		
+	  //总数
+	  //  let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		 // let brr=0;
+		 // 	for(let i = 0;i < arr.length;i ++){
+		 // 		brr += arr[i];
+		 // 	}
+		 // 	console.log(brr);
+
+	     //平均值
+		 // let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		 // let brr=0;
+		 // 	for(let i = 0;i < arr.length;i ++)
+		 // 	{
+		 // 	brr += arr[i];
+		 // 	}
+		 // 	tmp = brr / arr.length;
+		 // 	console.log(tmp);
+			
+
+		//中位数	
+		// let arr = [1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		// if(arr.length%2==0){
+		// 	let a = (arr.length/2)-1;
+		// 	let b = ((arr.length/2)+1)-1;
+		// 	arr=(arr[a]+arr[b])/2	 
+		//  }else{	
+		//  		let a=((arr.length-1)/2);
+		//  		arr=arr[a];
+		//  		}console.log('中位数  '+arr);nmb[tmp]===1
+
+								
+		
+
+
+		 //众数
+		    let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		    function ZhonShu(arr){
+		    	let brr = [];
+		    	let nmb = {};
+		    	arr.map(function(tmp){
+
+		    		if(nmb[tmp]==1)brr.push(tmp);
+		    		nmb[tmp]=(nmb[tmp]||0)+1;
+
+		    	});
+		    	return brr;
+		    }console.log('众数  '+ZhonShu(arr))
+
+		
+
+
+
+
+// 		  function jstest(){'众数  '+
+//   var arr=[{'key1':'value1','key2':'value2','key3':'value3'},{'key1':'value4','key2':'value5','key3':'value6'},{'key1':'value7','key2':'value8','key3':'value9'}] ;
+//   var obj={};
+//   var narr=new Array();
+//   for(var i=0;i<arr.length;i++){
+//     for(var j in arr[i]){
+//       if(obj[j]!=undefined)
+//       obj[j]+=arr[i][j];
+//       else
+//       obj[j]=arr[i][j];
+//     }
+//   }
+//   for(var i in obj){
+//     narr.push(eval("({'"+i+"':'"+obj[i]+"'})"));
+//   }
+//   //alert(narr[0].key1);
+//   console.log(narr[1].key2);
+// }
+// jstest();
+
+		
+		 
+		 // 	定义：给定N个数，出现次数最多的数为众数，若某众数出现次数大于N/2，则称其为绝对众数
+
+			// 已知给定N个整数存在绝对众数，以最低的时空复杂度计算该绝对众数。O(N)
+			
+			// 算法分析：删除数组A中两个不同的数，绝对众数不变！！！
+			
+			// 若两个数中有一个是绝对众数，则剩余的N-2个数中，绝对众数仍然大于(N-2)/2
+			// 若两个数中没有绝对众数，显然不影响绝对众数
+			
+
+
+
+			//给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。你可以假设数组是非空的，并且给定的数组总是存在众数。
+//	var x
+// var a = new Array()
+// a[0] = "奔驰S63L"
+// a[1] = "奔驰S500L"
+// a[2] = "奔驰S350L"
+
+// for (x in a)
+// {
+// console.log(a[x])
+// }	
+	//众数
+		 // let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		 // let brr=[1,2,3,4,5,6,7,8]; 
+		 // 	for(let i=0;i<brr.length;i++){
+		 // 	    for(let j=0;j<arr.length;j++){
+		 // 	        if(arr[j]==brr[i]){
+		 // 	            arr.splice(j,1);		 
+		 // 	        }
+		 // 	    }
+		 // 	}
+		 // 	console.log(arr);		
+		 
+
+
+	</script>
+</body>
+</html>

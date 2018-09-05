@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组去重</title>
+	<style type="text/css">body{padding: 200px;}</style>
+</head>
+<body>
+	<script type="text/javascript">
+					  /*i*//*j*/
+		var arr=['1','2','2','abc','abc','xxx','2',1,false,true]; //11
+		//var arr=['0','1','1','2','2','3','1',0,false,true]; 
+			for(var i = 0;i < arr.length;i++){
+				/*i等于0；0小于arr的长度时(11)，i自增*/
+				for(var j = i + 1;j < arr.length;j++){
+					/*j等于i+1即0加1；1小于arr的长度时(11)，j自增*/
+					if(arr[i] === arr[j]){
+						/*[0]全等于[1]*/
+						arr.splice(j,1);
+						//arr.splice(j=i,j);
+						i--;
+						/*i自减*/
+					}
+				}			   
+			}
+			console.log(arr);
+			document.write(arr);
+	</script>
+</body>
+</html>
