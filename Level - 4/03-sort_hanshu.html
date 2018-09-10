@@ -5,29 +5,32 @@
 	<title>sort 函数</title>
 </head>
 <body>
-  <style type="text/css">body{padding:250px;}</style>
 	<script type="text/javascript">
- var arr= [
-    { id: 1, name:'Jax' }, 
-    { id: 4, name:'Jim' }, 
-    { id: 3, name:'Joy' },
-    { id: 2, name:'Jay' }
- ];
-console.log(arr.sort(function(a,b){
-   return a.id-b.id;
- }));
+     //.sort()方法
+     let arr= [
+        { id: 1, name:'Jax' }, 
+        { id: 4, name:'Jim' }, 
+        { id: 3, name:'Joy' },
+       { id: 2, name:'Jay' },
+     ];
+   
+   console.log(arr.sort(function(a,b){
+      return a.id-b.id;
+    }));
 
- //  for (var i = arr.length - 1; i >= 0; i--) {
- //    /*i等于arr的长度减去1，即4-1，3则上组最后一位，当i大于等于0的时候，i自减*/
- //    for (var j = arr.length - 1; j >= 0; j--) {
-  
- //     document.write(arr[j].id)
- //    }
- //  }
-
-
-		
+  //for循环方法
+  let brr= [{ id: 1, name:'Jax' }, { id: 4, name:'Jim' }, { id: 3, name:'Joy' },{ id: 2, name:'Jay' },];
+   for(let i=0;i<brr.length;i++){
+     for(let j=i;j>=0;j--){
+       if(j+1==brr.length){break;}
+       if(brr[j].id>brr[j+1].id){
+         let ndy=brr[j];
+         brr[j]=brr[j+1];
+         brr[j+1]=ndy;
+       }
+     }
+   }console.log(brr)
 	</script>
 </body>
 </html>
-{          
+      

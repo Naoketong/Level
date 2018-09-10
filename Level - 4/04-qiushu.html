@@ -8,14 +8,7 @@
 <body>
 	<script type="text/javascript">
 		
-	  //总数
-	  //  let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
-		 // let brr=0;
-		 // 	for(let i = 0;i < arr.length;i ++){
-		 // 		brr += arr[i];
-		 // 	}
-		 // 	console.log(brr);
-
+	  //总
 	     //平均值
 		 // let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
 		 // let brr=0;
@@ -23,7 +16,14 @@
 		 // 	{
 		 // 	brr += arr[i];
 		 // 	}
-		 // 	tmp = brr / arr.length;
+		 // 	tmp = brr / arr.length;数
+	  //  let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		 // let brr=0;
+		 // 	for(let i = 0;i < arr.length;i ++){
+		 // 		brr += arr[i];
+		 // 	}
+		 // 	console.log(brr);
+
 		 // 	console.log(tmp);
 			
 
@@ -43,18 +43,30 @@
 
 
 		 //众数
-		    let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
-		    function ZhonShu(arr){
-		    	let brr = [];
-		    	let nmb = {};
-		    	arr.map(function(tmp){
+		    // let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		    // function ZhonShu(arr){
+		    // 	let brr = [];
+		    // 	let nmb = {};
+		    // 	arr.map(function(tmp){
 
-		    		if(nmb[tmp]==1)brr.push(tmp);
-		    		nmb[tmp]=(nmb[tmp]||0)+1;
+		    // 		if(nmb[tmp]==1)brr.push(tmp);
+		    // 		nmb[tmp]=(nmb[tmp]||0)+1;
 
-		    	});
-		    	return brr;
-		    }console.log('众数  '+ZhonShu(arr))
+		    // 	});
+		    // 	return brr;
+		    // }console.log('众数  '+ZhonShu(arr));
+		   
+		     let arr=[1, 2, 3, 4, 4, 5, 5, 6, 7, 8];
+		  	 for(let i=0;i<arr.length;i++){  	
+		  	 if(arr[i]=arr[i+1]){
+		  	 	arr[i]>arr[i+1];
+		  	 	
+		  	 }else{
+		  	 		arr[i]>arr[i+1];
+		  	 		break;
+		  	 		console.log(arr[i])
+		  	 }console.log(arr[i])
+		  	 }
 
 		
 
