@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>仿原生下拉</title>
+	<style type="text/css">
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.my-select{
+    position: relative;
+    display: inline-block;
+    width: 125px;
+    height: 30px;
+    top: 200px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.my-select #selectBtn{
+    width: 125px;
+    height: 30px;
+    font-size: 14px;
+    line-height: 30px;
+    color: #24292e;
+    background-color: #eff3f6;
+    outline: none;
+}
+.select-list{
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    list-style: none;
+    border: 1px solid #e4e4e4;
+    border-bottom: 0;
+    /*height: 0;*/
+    overflow: hidden;
+    transition: all .2s ease;
+}
+.select-list li{
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    border-bottom: 1px solid #e4e4e4;
+    padding-left: 10px;
+}
+.select-list li:first-child{
+    padding-left: 5px;
+}
+.select-list .select-item.active{
+    background-color: #0366d6;
+    color: #fff;
+}
+#countryInput{
+    display: inline-block;
+    width: 70px;
+    height: 20px;
+}
+#addCountry {
+    width: 40px;
+    height: 20px;
+}
+.select-list.active{
+    height: auto;
+}
+</style>
+    
+</head>
+<body>
+<div class="my-select">
+    <button id="selectBtn">选择</button>
+    <ul class="select-list">
+        <li>
+            <input id="countryInput" type="text" name="country" placeholder="请输入">
+            <button id="addCountry">确定</button>
+        </li>
+        <li class="select-item" data-value="中国">中国</li>
+        <li class="select-item" data-value="美国">美国</li>
+        <li class="select-item" data-value="英国">英国</li>
+        <li class="select-item" data-value="德国">德国</li>
+    </ul>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+var selectBtn    = document.getElementById('selectBtn');// 获取 selectBtn 元素
+var selectList   = document.getElementsByClassName('select-list')[0];// 获取 selectList 元素
+var countryInput = document.getElementById('countryInput');// 获取输入框元素
+var addCountry   = document.getElementById('addCountry');// 获取添加城市的按钮元素
+
+
+selectBtn.addEventListener('click',function(){// 给 selectBtn 绑定点击事件
+
+    var selectListClassName = selectList.getAttribute('class');// 获取 selectList 元素的 class 属性值
+
+    var activeIndex = selectListClassName.indexOf('active');                       
+//获取active在selectList元素的class属性值中的位置，如果没有，为 -1;
+    
+    if(activeIndex === -1){
+        selectList.setAttribute('class', 'select-list active');// class 属性在没有 active 的情况下
+                                                                            
+    }else{                                                                
+        selectList.setAttribute('class', 'select-list');// class 属性在有 active 的情况下
+    }
+})
+
+
+selectList.addEventListener('click',function(e){// 由于存在动态添加子元素的情况，所以我们委托绑定 selectList 元素，来监听 select-item 的点击事件。
+
+                                                        //这里  
+    var that = e.target;  // 监听点击来源是哪个元素
+    
+    var selectItemsClassName = that.getAttribute('class') ? that.getAttribute('class') : '';// 获取来源的 class 属性值
+    
+    var hasSelectItemClass = (selectItemsClassName.indexOf('select-item') === -1 );// 查看属性值是否带有 select-item 
+    
+    if(!hasSelectItemClass){// 如果 select-item 的子元素才触发事件
+
+        
+        var hasClassActive = (selectItemsClassName.indexOf('active') !== -1 )// 判断 select-item 中是否存在 active
+        
+        if(!hasClassActive){// 如果不存在 active
+           
+            var selectItemActive = document.querySelector('.select-item.active'); // 检查是否存在 其他 select-item 有 active 的情况
+            
+            if(selectItemActive){// 如果有的话
+                
+                selectItemActive.setAttribute('class','select-item');// 删除其他项目的 class 为 active 的属性值
+            }
+
+            
+            selectItemsClassName = selectItemsClassName + ' ' + 'active';// 添加 class 为 active 属性值
+            that.setAttribute('class', selectItemsClassName);
+
+            
+            var thisValue  = that.getAttribute('data-value');// 获取元素中 data-value 属性值
+           
+            selectBtn.innerText = thisValue; // 为按钮的文字和属性赋值
+            selectBtn.setAttribute('data-value',thisValue);
+        }
+    }
+})
+
+addCountry.addEventListener('click',function(){// 为输入框后面的按钮绑定点击事件
+
+    
+    var value = countryInput.value;// 获取输入框的值
+
+    
+    var li = document.createElement('li');// 创建元素，并且给元素赋予属性和文字
+    li.textContent = value;
+    li.setAttribute('class','select-item');
+    li.setAttribute('data-value',value);
+
+    
+    selectList.appendChild(li);// 在列表元素中添加新创建的元素
+})
+
+
+
+
+
+
+
+
+
+// var SelectPageDemo = {
+//     init:function(){
+//         this.bind();
+//     },
+//     bind:function(){
+//         var selectBtn = document.getElementById('selectBtn');
+//         var selectList = document.getElementsByClassName('select-list')[0];
+//         var addCountry   = document.getElementById('addCountry');
+//         selectBtn.addEventListener('click',this.toggleActive);
+//         selectList.addEventListener('click',this.deputeSelectItem);
+//         addCountry.addEventListener('click',this.addItem);
+//     },
+//     toggleActive:function(){
+//         var selectList = document.getElementsByClassName('select-list')[0];
+//         var selectListClassName = selectList.getAttribute('class');
+//         var activeIndex = selectListClassName.indexOf('active');
+//         if(activeIndex === -1){
+//             selectList.setAttribute('class', 'select-list active');
+//         }else{
+//             selectList.setAttribute('class', 'select-list');
+//         }
+//     },
+//     deputeSelectItem:function(e){
+//         var that = e.target;
+//         var selectItemsClassName = that.getAttribute('class') || '';
+//         var hasSelectItemClass = selectItemsClassName.indexOf('select-item') === -1;
+//         if(!hasSelectItemClass){
+//             SelectPageDemo.selectItem(that);
+//         }
+//     },
+//     selectItem:function(elem){
+//         var selectBtn = document.getElementById('selectBtn');
+//         var selectItemActive = document.querySelector('.select-item.active');
+//         var selectItemsClassName = elem.getAttribute('class') || '';
+//         if(selectItemActive){
+//             selectItemActive.setAttribute('class','select-item');
+//         }
+//         selectItemsClassName = selectItemsClassName + ' ' + 'active';
+//         elem.setAttribute('class', selectItemsClassName);
+//         var thisValue  = elem.getAttribute('data-value');
+//         selectBtn.innerText = thisValue;
+//         selectBtn.setAttribute('data-value',thisValue);
+
+//         // 如果希望点后关闭下拉只需要服用 toggleActive 事件即可
+//         SelectPageDemo.toggleActive();
+//     },
+//     addItem:function(){
+//         var selectList = document.getElementsByClassName('select-list')[0];
+//         var countryInput = document.getElementById('countryInput');
+//         var value = countryInput.value;
+//         if(value){
+//             var li = document.createElement('li');
+//             li.textContent = value;
+//             li.setAttribute('class','select-item');
+//             li.setAttribute('data-value',value);
+//             selectList.appendChild(li);
+//         }
+//     }
+// }
+// SelectPageDemo.init();
+         
+
+</script>
+</body>
+</html>

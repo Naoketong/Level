@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>单例模式</title>
+    
+</head>
+<body>
+    <p class="arr">你点我啊</p>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+
+         $(function(){
+             console.log('6666');
+         })
+         function tmp1(){
+             console.log('我来组成头部')
+         }
+         tmp1();        
+         let tmp2 = function(){
+             console.log('我来组成身体')
+         }
+         tmp2();        
+         let utils = {
+             tmp3:function(){
+                 console.log('我来组成————扁桃体')
+             }
+         }
+         utils.tmp3();
+
+        $(function(){
+            const pagehome = {
+                data:{
+                    name: '点个毛啊'
+                },
+                init:function(){
+                    this.bind();
+                },
+                bind:function(){
+                    $('.arr').on('click',this.box);
+                },
+                box:function(){
+                    console.log(pagehome.data.name);
+                }
+            }
+            pagehome.init();
+        })
+
+</script>
+</body>
+</html>
