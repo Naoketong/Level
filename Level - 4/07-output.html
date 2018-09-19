@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>output</title>
+</head>
+<body>
+  [' JavaScript-4 ',' HTML-2 ',' CSS-3 ',' JQuery-1 '];
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+	<script type="text/javascript">
+
+let Stacks = [
+{id: 1, name: 'JavaScript', level: 1, active: true},//JavaScript-1  不要的
+{id: 2, name: 'CSS',        level: 3, active: false},//CSS-3
+{id: 3, name: 'HTML',       level: 2, active: true},//HTML-2 
+{id: 1, name: 'JavaScript', level: 4, active: true},//JavaScript-4
+{id: 4, name: 'JQuery',     level: 1, active: false}//JQuery-1 
+];
+let tmp = [];
+function output(Arr) {
+  Arr.map( (mmp,index,arr)=>{
+    arr.map((item, itemIndex)=>{
+      if(item.id == mmp.id&&item.level<mmp.level){
+        //item的id相等于mmp的id，与 item的level 小于 妈卖批的level
+        Arr.splice(itemIndex,1);//删除重复id
+      }
+    })
+  } )
+
+   Arr.map((mmp,index,arr)=>{
+     arr.map((item)=>{
+        if(mmp.active && item.active && mmp.level>item.level){
+          let xyt = mmp.name + "-" + mmp.level;
+          let xyt1 = item.name + "-" + item.level;
+          tmp.push(xyt,xyt1)
+          }
+          if(!mmp.active && !item.active && mmp.level<item.level){
+            let xyt = mmp.name + "-"+ mmp.level;
+            let xyt1 = item.name + "-"+ item.level;
+            tmp.push(xyt1,xyt)
+           }
+         })
+       })
+   return tmp;
+}
+console.log(output(Stacks))
+
+	</script>
+</body>
+</html>
