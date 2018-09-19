@@ -18,26 +18,24 @@ let Stacks = [
 ];
 let tmp = [];
 function output(Arr) {
-  Arr.map( (mmp,index,arr)=>{
-    arr.map((item, itemIndex)=>{
-      if(item.id == mmp.id&&item.level<mmp.level){
-        //item的id相等于mmp的id，与 item的level 小于 妈卖批的level
-        Arr.splice(itemIndex,1);//删除重复id
+  Arr.map( (mmp,index,arr) => {
+    arr.map((item, itemIndex) => {
+      if(item.id == mmp.id && item.level < mmp.level){
+        Arr.splice(itemIndex,1);
       }
     })
   } )
-
-   Arr.map((mmp,index,arr)=>{
-     arr.map((item)=>{
-        if(mmp.active && item.active && mmp.level>item.level){
+   Arr.map((mmp,index,arr) => {
+     arr.map((item) => {
+        if(mmp.active && item.active && mmp.level > item.level){
           let xyt = mmp.name + "-" + mmp.level;
           let xyt1 = item.name + "-" + item.level;
-          tmp.push(xyt,xyt1)
+          tmp.push(xyt,xyt1);
           }
-          if(!mmp.active && !item.active && mmp.level<item.level){
+          if(!mmp.active && !item.active && mmp.level < item.level){
             let xyt = mmp.name + "-"+ mmp.level;
             let xyt1 = item.name + "-"+ item.level;
-            tmp.push(xyt1,xyt)
+            tmp.push(xyt1,xyt);
            }
          })
        })

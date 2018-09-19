@@ -24,50 +24,47 @@
 			{name: 'Nginx Lesson 4'}]}
 		]}
 	];
-	//console.log(Series[0].courses[0])
 	//蠢方法
-	// let arr = Series[0].courses;
-	// let brr = arr[0].lessons;
-	// let crr = arr[1].lessons;
-	// let drr = arr[2].lessons;
-	// let err = brr.length+crr.length+drr.length;
-	// let tmp = {};
-	//  tmp['name']=Series[0].name;    
- //   tmp['count']=err;
-	// console.log(tmp)
-	// let aaa = Series[1].courses;
-	// let bbb = aaa[0].lessons;
-	// let ccc = aaa[1].lessons;
-	// let ddd = aaa[2].lessons;
-	// let eee = bbb.length+ccc.length+ddd.length;
-	// let mmp = {};
-	//  mmp['name']=Series[1].name;    
- //   mmp['count']=eee;
-	// console.log(mmp)
+	  let arr = Series[0].courses;
+	  let brr = arr[0].lessons;
+	  let crr = arr[1].lessons;
+	  let drr = arr[2].lessons;
+	  let err = brr.length + crr.length + drr.length;
+	  let tmp = {};
+	  tmp['name'] = Series[0].name;    
+    tmp['count'] = err;
+	  console.log(tmp);
+	  let aaa = Series[1].courses;
+	  let bbb = aaa[0].lessons;
+	  let ccc = aaa[1].lessons;
+	  let ddd = aaa[2].lessons;
+	  let eee = bbb.length + ccc.length + ddd.length;
+	  let mmp = {};
+	  mmp['name'] = Series[1].name;    
+    mmp['count'] = eee;
+	  console.log(mmp);
 	
-	 function output3(Series) {
-     let tmp=[];
-     Series.map( data =>{
-     	//抽取主数组首元素
-       let mmp={};
-       let courses = data.courses;
-       //读取首元素
-       console.log(courses)
-       let count=0;
-       //0为基本数
-       courses.map( index =>{
-       	//上同
-         count=count+index.lessons.length;
-         //0加index主元素旗下元素name的长度
-       })
-       mmp['name']=data.name;    
-       mmp['count']=count;
-       tmp.push(mmp);
-       //把参数添加到对象末尾
-     })
-     return tmp;
-    }
-    console.log(output3(Series));
+	 
+     function output3(Series) {
+     	let tmp = [];
+     	Series.map( data => {
+     		let mmp = {};
+     		let courses = data.courses;
+     		//console.log(courses);
+     		let meizu = 0;
+     		courses.map(index => {
+     			// let aaa = index.lessons;
+     			// let bbb = meizu+aaa.length
+     			meizu = meizu + index.lessons.length
+     			//console.log(meizu)
+     		})
+     		mmp['name'] = data.name;
+     		mmp['count'] = meizu;
+     		tmp.push(mmp);
+     	})
+     	return tmp;
+     }
+     console.log(output3(Series));
 
 
 
