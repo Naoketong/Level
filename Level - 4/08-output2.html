@@ -16,6 +16,7 @@
 			{id: 2,name: 'CSS',level: 3,},
 			{id: 3,name: 'HTML',level: 2,}
 		];
+		
 		function output(Arr1,Arr2) {
 			let resultArr =  Arr2.map(data =>{
 				let id = data.id;
@@ -31,25 +32,25 @@
 		console.log(output(myStacks,jobStacks));
 
 
-	  // function output(Arr1,Arr2) {
-	  // 	let resultArr = []; 
-   //      jobStacks.map( smt => {
-   //        let tmp = myStacks.filter( item => item.id == smt.id)[0];
-   //        //console.log(tmp);
-   //        if(tmp){
-   //        	if(tmp.level > smt.level){
-   //        	 smt['active'] = true; 
-   //        	}else{
-   //        	 smt['active'] = false; 
-   //        	}
-   //        }else{
-   //          smt['active'] = false;  
-   //        }
-   //        resultArr.push(smt);
-   //      })
-   //      return resultArr;
-   //    }
-   //    console.log(output(myStacks));
+	  function output(Arr1,Arr2) {
+	  	let resultArr = []; 
+        jobStacks.map( smt => {
+          let tmp = myStacks.filter( item => item.id == smt.id)[0];
+          //console.log(tmp);
+          if(tmp){
+          	if(tmp.level > smt.level){
+          	 smt['active'] = true; 
+          	}else{
+          	 smt['active'] = false; 
+          	}
+          }else{
+            smt['active'] = false;  
+          }
+          resultArr.push(smt);
+        })
+        return resultArr;
+      }
+      console.log(output(myStacks));
 
 
 		  	   // let resultArr = [];

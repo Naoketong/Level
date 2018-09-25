@@ -16,32 +16,75 @@ let Stacks = [
 {id: 1, name: 'JavaScript', level: 4, active: true},//JavaScript-4
 {id: 4, name: 'JQuery',     level: 1, active: false}//JQuery-1 
 ];
-let tmp = [];
+
+// function output(Arr) {
+//   let unique = [];
+//   Arr.forEach( data => {
+//     //做出第一个条件：在相同的ID的项里。没有一个item的level是大于data.level
+//     let isMax = !Arr.some( item => item.id === date.id && data.level < item.level);
+//     console.log(isMax);
+//     //做出第二个条件：防止unique里面有重复的项
+//     let noRepeat = unique.every( item => item.id !== date.id);
+//     //如果满足以上两个条件，就把这一项push到unique里面
+//     isMax && noRepeat && unique.push(data);
+//   });
+// };
+// //得到一个去重后并且各项level值较大的数
+// console.log(unique)
+
+
+
 function output(Arr) {
-  Arr.map( (mmp,index,arr) => {
-    arr.map((item, itemIndex) => {
-      if(item.id == mmp.id && item.level < mmp.level){
-        Arr.splice(itemIndex,1);
+   let uniqueArr = [];
+   Arr.forEach( data=>{
+     let tmpindex = null;
+     let tmpdata = null;
+     let hasRepeat = false;
+     uniqueArr.forEach((u_data,index=>{
+      if(u_data.id === data.id){
+        hasRepeat = true;
+        tmpindex = index;
+        tmpStak = u_data;
       }
-    })
-  } )
-   Arr.map((mmp,index,arr) => {
-     arr.map((item) => {
-        if(mmp.active && item.active && mmp.level > item.level){
-          let xyt = mmp.name + "-" + mmp.level;
-          let xyt1 = item.name + "-" + item.level;
-          tmp.push(xyt,xyt1);
-          }
-          if(!mmp.active && !item.active && mmp.level < item.level){
-            let xyt = mmp.name + "-"+ mmp.level;
-            let xyt1 = item.name + "-"+ item.level;
-            tmp.push(xyt1,xyt);
-           }
-         })
-       })
-   return tmp;
-}
-console.log(output(Stacks))
+     }))
+     if(!hasRepeat){
+      uniqueArr.push(data);
+     }else if(tmpStak.level < data.level){
+      uniqueArr.splice(tmpindex,1,data);
+     }
+  })
+   let activeArr = uniqueArr.filter( data =>data.active).sort((a,b)=>a.level<b.level);
+   let noActiveArr = uniqueArr.filter(data=>!data.active).sort((a,b)=>a.level<b.level);
+   let resultArr = activeArr.concat(noActiveArr).map( data=>data.name +'-'+data.level)
+   return resultArr
+ }
+ console.log(output(Stacks))
+// let tmp = [];
+// function output(Arr) {
+//   Arr.map( (mmp,index,arr) => {
+//     arr.map((item, itemIndex) => {
+//       if(item.id == mmp.id && item.level < mmp.level){
+//         Arr.splice(itemIndex,1);
+//       }
+//     })
+//   } )
+//    Arr.map((mmp,index,arr) => {
+//      arr.map((item) => {
+//         if(mmp.active && item.active && mmp.level > item.level){
+//           let xyt = mmp.name + "-" + mmp.level;
+//           let xyt1 = item.name + "-" + item.level;
+//           tmp.push(xyt,xyt1);
+//           }
+//           if(!mmp.active && !item.active && mmp.level < item.level){
+//             let xyt = mmp.name + "-"+ mmp.level;
+//             let xyt1 = item.name + "-"+ item.level;
+//             tmp.push(xyt1,xyt);
+//            }
+//          })
+//        })
+//    return tmp;
+// }
+// console.log(output(Stacks))
 
 	</script>
 </body>
