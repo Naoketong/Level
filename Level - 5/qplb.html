@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>全屏轮播</title>
+</head>
+<style type="text/css">
+*{ 
+  margin: 0; 
+  padding: 0;
+}
+.swiper-wrapper{
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+}
+
+.swiper-list{
+  position: relative;
+  display: flex;
+  height: 100%;
+}
+.swiper-item{
+  width: 100%;
+  flex: none;
+}
+
+.swiper-pagination{
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.swiper-pagination-switch{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #F2EFE6;
+}
+.swiper-pagination-switch.active{
+  background-color: #E03636;
+}
+.swiper-arrow{
+  position: absolute;
+  width: 50px;
+  height: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #EDD0BE;
+  line-height: 80px;
+  text-align: center;
+  color: #666;
+  cursor: pointer;
+  opacity: 0;
+  transition: all .2s ease;
+}
+.swiper-arrow-left{
+  left: 100px;
+}
+.swiper-arrow-right{
+  right: 100px;
+}
+.swiper-wrapper:hover .swiper-arrow{
+  opacity: 1;
+}
+	</style>
+<body>
+	
+	<div class="swiper-wrapper">
+    <div class="swiper-list">
+      <div class="swiper-item" style="background-color: #82A6F5;"></div><!--图片-->
+      <div class="swiper-item" style="background-color: #EAF048;"></div>
+      <div class="swiper-item" style="background-color: #9FF048;"></div>
+      <div class="swiper-item" style="background-color: #9999cc;"></div>
+      <div class="swiper-item" style="background-color: #F6D6FF;"></div>
+    </div>
+    <div class="swiper-pagination">
+      <span class="swiper-pagination-switch active"></span><!--圆点-->
+      <span class="swiper-pagination-switch"></span>
+      <span class="swiper-pagination-switch"></span>
+      <span class="swiper-pagination-switch"></span>
+      <span class="swiper-pagination-switch"></span>
+    </div>
+    <a class="swiper-arrow swiper-arrow-left" id="swiperPrev">&lt;</a><!--上下页-->
+    <a class="swiper-arrow swiper-arrow-right" id="swiperNext">&gt;</a>
+</div>
+<!-- 脚本依赖jQuery -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+	<script type="text/javascript">
+		let tmp = {
+    data:{
+      swiperItemWidth:$('.swiper-item').width(), // 当前容器宽度
+      swiperItemLength:$('.swiper-item').length, // 重设前实际数量 长度
+      swiperSpeed:500,                           // 动画速度
+      index:0,                                   // 当前第几个，默认第一项
+      isLock:false                               // 锁，防止在滚动过程中再次触发
+    },
+    init:function(){
+      this.addItem(); // 添加项
+      this.bind();    // 绑定点击事件
+    },
+    bind:function(){
+                    //.on()函数用于为指定元素的一个或多个事件绑定事件处理函数。
+      $('#swiperNext').on('click',this.swiperNext); // 点击下一个按钮  
+      $('#swiperPrev').on('click',this.swiperPrev); // 点击上一个按钮
+      $('.swiper-pagination-switch').on('click',this.swiperSwitch); // 点击切换按钮 下方圆点  switch(转换)
+      $(window).on('resize', this.resetSwipterWidth); // 页面宽度改变   resize(调整大小)
+    },
+    addItem:function(){
+      let swiperItemWidth  = this.data.swiperItemWidth; //获取一个项目的宽度
+      let swiperItemLength = this.data.swiperItemLength;   // 获取当前有几个项目
+      let swiperFirstItem  = $('.swiper-item').eq(0).clone(); // 克隆第一个项目  Firs(第一)
+      let swiperLastItem   = $('.swiper-item').eq(swiperItemLength - 1).clone(); // 克隆最后一个项目  Last（最后)
+
+                     //.append() 方法在被选元素的结尾（仍然在内部）插入指定内容
+      $('.swiper-list').append(swiperFirstItem); // 把克隆的第一个项目添加到最后一项中 
+
+                    // .prepend()方法在被选元素的开头插入指定内容。
+      $('.swiper-list').prepend(swiperLastItem); // 把克隆的最后一个项目添加到第一项中
+
+      // 重设偏移量，让页面展示第二个项目，为原来的第一项
+      $('.swiper-list').css('left', - swiperItemWidth +'px'); //.css() 方法设置或返回被选元素的一个或多个样式属性。
+    },
+    // 点击下一个按钮时
+    swiperNext:function(){
+      let next_index = tmp.data.index + 1;
+      tmp.gotoIndex(next_index);
+    },
+
+    // 点击上一个按钮
+    swiperPrev:function(){
+      let prev_index = tmp.data.index - 1;
+      tmp.gotoIndex(prev_index);
+    },
+    // 点击切换按钮
+    swiperSwitch:function(){
+      var this_index = $(this).index();
+      tmp.gotoIndex(this_index);
+    },
+    // 页面发生重设
+    resetSwipterWidth:function(){
+      // 获取当前第几项
+      let active_index = tmp.data.index;
+      // 获取当前页面宽度
+      let swiperItemWidth = $('.swiper-item').width();
+      // 重新计算偏移量
+      let translateX = (swiperItemWidth + swiperItemWidth * active_index)
+      // 设置改变偏移
+      $('.swiper-list').animate({'left': - translateX +'px'},40)//animate() 方法执行 CSS 属性集的自定义动画。
+
+      // 更新存储项目的宽度
+      tmp.data.swiperItemWidth = swiperItemWidth;
+    },
+    gotoIndex:function(index){
+      // 获取实际数组的长度
+      let swiperItemLength = tmp.data.swiperItemLength;
+      // 获取当前项目的宽度
+      let swiperItemWidth  = tmp.data.swiperItemWidth;
+      // 获取设置的动画速度
+      let swiperSpeed = tmp.data.swiperSpeed;
+      // 计算偏移量
+      let translateX = (swiperItemWidth + swiperItemWidth * index)
+      // 锁
+      let isLock = tmp.data.isLock;
+      if(isLock){
+        return
+      }else{
+        tmp.data.isLock = true;
+      }
+      let swiperListEle = $('.swiper-list');
+      // 偏移动画
+      swiperListEle.animate({
+        'left': - translateX + 'px'
+      },swiperSpeed,function(){
+        // 如果当前项目是 -1 ，第一项，就是展示的是我们克隆在最后一项的放在第一项的容器
+        // 通常在第 0 项的时候，点击上一个
+        if(index === -1){
+          // 这个时候其实用户是想去最后一项，我们把当前项目重设为最后一项
+          index = swiperItemLength -1 ;
+          // 瞬间改变页面偏移
+          // 因为是瞬间且展示的效果一样，所以用户不会察觉到
+          swiperListEle.css('left', - swiperItemWidth * swiperItemLength +'px');
+          }
+
+          // 如果当前是最后一项
+          if(index === swiperItemLength){
+            // 实际用户是想去第 0 项
+            index = 0;
+            // 瞬间改变页面偏移
+            swiperListEle.css('left', - swiperItemWidth +'px');
+          }
+
+          // 重设切换按钮的高亮位置
+          $('.swiper-pagination-switch').removeClass('active');
+          $('.swiper-pagination-switch').eq(index).addClass('active');
+          // 更新存储当前展示的位置
+          tmp.data.index  = index;
+          tmp.data.isLock = false;
+        });
+    }
+}
+
+tmp.init();
+
+
+思路：
+
+√1、首先必须的及需要存储的值有 每个项目的宽度，有多少个项目（len），当前显示哪个项目
+
+2、头尾添加各一个项目后，重设偏移距离
+
+3、当前显示哪个项目的 index（ n ） 值和偏移量 translateX 的关系 （ n + 1 ）* x
+
+4、点击获取当前的 index ，然后计算出新的 index ，再交给滚动事件去处理。
+
+5、当页面宽度发生变化时候需要重新计算项目宽度和偏移量，因此需要监听浏览器的尺寸变化
+
+6、当点击的 index 为 -1 时，及会滚动到我们克隆的项目中，在滚动完毕之后需要重新设置偏移距离，瞬间定位到第 len 个项目中去。
+
+7、同理当点击的 index 为 原本项目的数量值时，会滚动到我们克隆的项目中，在滚动完毕之后需要重新设置偏移距离，瞬间定位到初始项目中去。
+
+√8、锁，如果连续点击的话，会不断的触发事件，因此我们要加把锁，在开始滚动时把锁关闭，等滚动完毕之后把锁打开。
+实现原理： 克隆项目的第一个和最后一个分别放在最后一项和第一项，保证在第一项时点击上一个会平滑的展示最后一项的内容。同理在最后一项时候点击下一项会平滑展示第一项的内容。
+	</script>
+</body>
+</html>
+// let tmp = {
+  //     data:{
+  //       swiperItemWidth:$('.swiper-item').width(),
+  //       swiperItemLength:$('.swiper-item').length,
+  //       swiperSpeed:500,
+  //       index:0,
+  //       islock:false,
+  //     },
+  //     init:function(){
+  //       this.addItem();
+  //       this.bind();
+  //     },
+
+  //     bind:function(){
+  //       $('#swiperNext').on('click',this.swiperNext);
+  //       $('#swiperPrev').on('click',this.swiperPrev);
+  //       $('.swiper-pagination-switch').on('click',this.swiperSwitch);
+  //       $(window).on('resize', this.resetSwipterWidth);
+  //     },
+
+  //     addItem:function(){
+  //       let swiperItemWidth = this.data.swiperItemWidth;
+  //       let swiperItemLength = this.data.swiperItemLength;
+  //       let swiperFirstItem = $('.swiper-item').eq(0).clone();
+  //       let swiperLastItem = $('.swiper-item').eq(swiperItemLength -1).clone();
+  //       $('.swiper-list').append(swiperFirstItem);
+  //       $('.swiper-list').prepend(swiperLastItem);
+  //       $('.swiper-list').css('left', - swiperItemWidth +'px');
+  //     },
+
+  //     swiperNext:function(){
+  //       let next_index = tmp.data.index + 1;
+  //       tmp.gotoIndex(next_index);
+  //     },
+  //     swiperPrev:function(){
+  //       let prev_index = tmp.data.index - 1;
+  //       tmp.gotoIndex(prev_index);
+  //     },
+  //     swiperSwitch:function(){
+  //       var this_index = $(this).index();
+  //       tmp.gotoIndex(this_index);
+  //     },
+  //     resetSwipterWidth:function(){
+  //       let active_index = tmp.data.index;
+  //       let swiperItemWidth = $('.swiper-item').width();
+  //       let translateX = (swiperItemWidth + swiperItemWidth * active_index)
+  //       $('.swiper-list').animate({'left': - translateX +'px'},40);
+  //       tmp.data.swiperItemWidth = swiperItemWidth;
+  //     },
+          
+  //     gotoIndex:function(index){
+  //       let active_index = tmp.data.index;
+  //       let swiperItemLength = tmp.data.swiperItemLength;
+  //       let swiperItemWidth = tmp.data.swiperItemWidth;
+  //       let swiperSpeed = tmp.data.swiperSpeed;
+  //       let translateX = (swiperItemWidth + swiperItemWidth * active_index)
+  //       console.log(translateX)
+  //       let isLock = tmp.data.isLock;
+  //       if(isLock){
+  //         return
+  //       }else{
+  //         tmp.data.isLock = true;
+  //       }
+  //       let swiperListEle = $('.swiper-list');
+  //       swiperListEle.animate({
+  //         'left':- translateX +'px',
+  //       },
+  //       swiperSpeed,function(){
+  //         if(index === -1){
+  //           index = swiperItemLength -1;
+  //           swiperListEle.css('left',- swiperItemWidth * swiperItemLength + 'px');
+  //         }
+  //         if(index === swiperItemLength){
+  //           index = 0;
+  //           swiperListEle.css('left', - swiperItemWidth +'px')
+  //         }
+  //         $('.swiper-pagination-switch').removeClass('active');
+  //         $('.swiper-pagination-switch').eq(index).addClass('active');
+  //         tmp.data.index = index;
+  //         tmp.data.isLock = false;
+  //       });
+  //     }
+  //   }
+  //     tmp.init();                
+  

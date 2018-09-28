@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>滚动导航</title>
+</head>
+<style type="text/css">
+	*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.h400{
+    height: 400px;
+    border: 1px solid #e4e4e4;
+}
+.navigator {
+    height: 60px;
+}
+.navigator ul{
+    display: flex;
+    list-style-type: none;
+    background: #f5f5f5;
+}
+.navigator.fixed-top ul{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.navigator ul li{
+    flex: 1;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+}
+.navigator ul li:hover{
+    background: #666;
+    color: #fff;
+}
+.navigator ul li.active{
+    background: #333;
+    color: #fff;
+}
+.navigator-right{
+    position: fixed;
+    top: 460px;
+    right: 50%;
+    margin-right: -620px;
+    width: 120px;
+    background: #fff;
+}
+.navigator-right ul{
+    border: 1px solid #e4e4e4;
+}
+.navigator-right li{
+    line-height: 60px;
+    list-style-type: none;
+    text-align: center;
+}
+.navigator-right li:hover{
+    background: #f5f5f5;
+    cursor: pointer;
+}
+.navigator-right li.active{
+    background: #333;
+    color: #fff;
+}
+
+/*列表下拉*/
+.toggle-list{
+    overflow: hidden;
+}
+.list-title{
+    line-height: 40px;
+    background-color: #666;
+    cursor: pointer;
+}
+.list-item{
+    height: 0;
+    line-height: 20px;
+    background-color: #999;
+    transition: all .2s ease;
+}
+.list-item.active{
+    line-height: 20px;
+    background-color: #333;
+    color: #fff;
+}
+.toggle-list.active .list-item{
+    height: 20px;
+}
+
+/*tab切换*/
+.checkout-tab{
+    display: flex;
+}
+.tab-item{
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    background: #f5f5f5;
+}
+.tab-content{
+    text-align: center;
+    line-height: 50px;
+    background: #f1f1f1;
+    display: none;
+}
+.tab-item.active{
+    background: #333;
+    color: #fff;
+}
+.tab-content.active{
+    display: block;
+}
+</style>
+<body>
+	div class="h400">SECTION Banner</div>
+<div class="navigator">
+    <ul>
+        <li data-nav="section-1">SECTION 1</li>
+        <li data-nav="section-2">SECTION 2</li>
+        <li data-nav="section-3">SECTION 3</li>
+        <li data-nav="section-4">SECTION 4</li>
+        <li data-nav="section-5">SECTION 5</li>
+    </ul>
+</div>
+<div class="h400 section-1">SECTION 1</div>
+<div class="h400 section-2">SECTION 2</div>
+<div class="h400 section-3">SECTION 3</div>
+<div class="h400 section-4">SECTION 4</div>
+<div class="h400 section-5">SECTION 5</div>
+<div class="navigator-right">
+    <ul>
+        <li data-nav="section-1">SECTION 1</li>
+        <li data-nav="section-2">SECTION 2</li>
+        <li data-nav="section-3">SECTION 3</li>
+        <li data-nav="section-4">SECTION 4</li>
+        <li data-nav="section-5">SECTION 5</li>
+    </ul>
+</div>
+<div class="h400">
+    <p>SECTION TOGGLE-LIST</p>
+    <dl class="toggle-list">
+        <dt class="list-title">title</dt>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+    </dl>
+    <dl class="toggle-list active">
+        <dt class="list-title">title</dt>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+    </dl>
+    <dl class="toggle-list">
+        <dt class="list-title">title</dt>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+        <dd class="list-item">item</dd>
+    </dl>
+</div>
+<div class="h400">
+    <p>SECTION CHECKOUT TAB</p>
+    <div class="checkout-tab">
+        <div class="tab-item active">tab-1</div>
+        <div class="tab-item">tab-2</div>
+        <div class="tab-item">tab-3</div>
+        <div class="tab-item">tab-4</div>
+    </div>
+    <div class="checkout-content">
+        <div class="tab-content active">content - 1</div>
+        <div class="tab-content">content - 2</div>
+        <div class="tab-content">content - 3</div>
+        <div class="tab-content">content - 4</div>
+    </div>
+</div>
+<div class="h400">SECTION Footer</div>
+<script type="text/javascript">
+	const navInstance = {
+    data:{
+        islock:false, // 锁
+        timestamp:0,  // 事件执行的时间记录
+        timestampOffset:100, // 间隔时间毫秒
+        navigatorHeight:60,   // 导航条高度
+        bannerHeight:400,     // banner首屏高度
+        sectionOffset:[],  // 需要高亮的class距离页面顶部高度的集合
+    },
+    init:function(){
+        this.bind(); //绑定事件
+        this.resetSectionOffset();//重设高度
+        this.actionScrollEvent()  //触发设置事件（防止原地刷新不触发滚动）
+    },
+    bind:function(){
+        $('.navigator li').on('click',this.goScorll);// 点击导航
+        $('.navigator-right li').on('click',this.goScorll); // 点击右侧导航
+        $(window).on('scroll',this.windowScroll);// 页面滚动
+        $('.list-title').on('click',this.toggleList); //点击下拉标题
+        $('.list-item').on('click',this.addItemActive); // 点击下拉标题内容项目
+        $('.tab-item').on('click',this.checkoutTab); // 点击切换标签
+    },
+    resetSectionOffset:function(){
+        // 所有需要定位class组成的数组
+        let sectionKlass = ['section-1','section-2','section-3','section-4','section-5'];
+        // 遍历获取其klass和距离文档顶部的距离（需要滑动多少）
+        let sectionOffset = sectionKlass.map( klass => {
+            return {
+                klass:klass,
+                offsetTop: $(`.${klass}`).offset().top
+            }
+        })
+        // 存储到data中，给其他用的地方调用
+        navInstance.data.sectionOffset = sectionOffset;
+    },
+    goScorll:function(){
+        // 获取当前点击项目的 data-nav 里的值，为要跳转的 klass
+        let klass = $(this).data('nav');
+        // 获取导航的高度
+        let navigatorHeight = navInstance.data.navigatorHeight;
+        // 计算要滚动到的实际高度，为要跳转的高度 - 固定导航的高度差
+        let top = $(`.${klass}`).offset().top - navigatorHeight;
+        // 动画调整，时间 500 毫秒
+        $("html,body").animate({
+            // 动画移动页面滚动高度
+            scrollTop: top
+        }, 500,function(){
+            // 动画滚动结束，触发滚动要执行的事件，担心截流时候的最后一帧没有触发。
+            navInstance.actionScrollEvent();
+        });
+    },
+    windowScroll:function(e){
+        // 获取当前时间
+        let timestampNow    = Date.now();
+        // 再存储中获取上一次的时间
+        let timestampLast   = navInstance.data.timestamp;
+        // 再存储中获取间隔时间
+        let timestampOffset = navInstance.data.timestampOffset;
+        // 如果当前和上一次发生的时间对比
+        let timeLock = (timestampNow - timestampLast ) > timestampOffset;
+        // 如果大于间隔时间就执行，时间太短就不执行，是一个截流的操作
+        if(!navInstance.data.islock && timeLock){
+            // 存储更新当前执行的时间戳
+            navInstance.data.timestamp = timestampNow;
+            // 触发滚动要执行的事件
+            navInstance.actionScrollEvent();
+        }
+    },
+    // 滚动要执行的事件
+    actionScrollEvent:function(){
+        // 获取当前滚动高度
+        let scrollTop = $(window).scrollTop();
+        // 开锁
+        navInstance.data.islock = false;
+        // 导航定位
+        navInstance.toggleNavigatorFixed(scrollTop);
+        // 导航高亮
+        navInstance.hightlightNavigator(scrollTop);
+    },
+    // 导航定位
+    toggleNavigatorFixed:function(scrollTop){
+        // 获取当前滚动高度是否大于导航距离文档的高度（第一屏高度）
+        let shouldfixedTop = scrollTop > navInstance.data.bannerHeight;
+        // 当前导航是否已经定位
+        let hasfixedTop = $('.navigator').hasClass('fixed-top');
+        // 如果滚动大于且没有定位
+        if(shouldfixedTop && !hasfixedTop){
+            // 添加class定位
+            $('.navigator').addClass('fixed-top');
+        // 如果滚动小于且已经定位
+        }else if(!shouldfixedTop && hasfixedTop){
+            // 移除class取消定位
+            $('.navigator').removeClass('fixed-top');
+        }
+    },
+    // 导航高亮
+    hightlightNavigator:function(scrollTop){
+        // 获取导航的高度
+        let navigatorHeight = navInstance.data.navigatorHeight;
+        // 获取所有模块的高度
+        let sectionOffset = navInstance.data.sectionOffset;
+        // 看哪个class目前是最后一个超过滚动距离的
+        let klass = '';
+        sectionOffset.forEach( data => {
+            if(scrollTop >= data.offsetTop - navigatorHeight){
+                klass = data.klass
+            }
+        })
+        // 移除class
+        $('.navigator li').removeClass('active');
+        $('.navigator-right li').removeClass('active');
+        // 给这个class添加active
+        $(`.navigator li[data-nav="${klass}"]`).addClass('active');
+        $(`.navigator-right li[data-nav="${klass}"]`).addClass('active');
+    },
+    toggleList:function(){
+        // 如果class中有active则去除，没有添加
+        $(this).parent().toggleClass('active');
+    },
+    addItemActive:function(e){
+        // 阻止冒泡
+        e.stopPropagation();
+        // 移除list-item所有active
+        $('.list-item').removeClass('active');
+        // 当前项添加active
+        $(this).addClass('active');
+    },
+    checkoutTab:function(e){
+        // 获取第几个tab点击
+        let index = $(this).index();
+        // 移除所有active
+        $('.tab-item').removeClass('active');
+        // 给当前项目添加active
+        $(this).addClass('active');
+        // 展示项目中移除所有active
+        $('.tab-content').removeClass('active');
+        // 给对应的第几个tab的第几个content添加active
+        $('.tab-content').eq(index).addClass('active');
+    }
+}
+
+navInstance.init();
+</script>
+
+</body>
+</html>
