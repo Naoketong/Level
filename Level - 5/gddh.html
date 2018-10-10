@@ -5,7 +5,7 @@
 	<title>滚动导航</title>
 </head>
 <style type="text/css">
-	*{
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -117,32 +117,36 @@
 }
 </style>
 <body>
-	div class="h400">SECTION Banner</div>
+	<div class="h400">哈哈哈哈哈哈</div>
+
 <div class="navigator">
     <ul>
-        <li data-nav="section-1">SECTION 1</li>
-        <li data-nav="section-2">SECTION 2</li>
-        <li data-nav="section-3">SECTION 3</li>
-        <li data-nav="section-4">SECTION 4</li>
-        <li data-nav="section-5">SECTION 5</li>
+        <li data-nav="section-1">我是第一层</li><!-- 横的 -->
+        <li data-nav="section-2">我是第二层</li>
+        <li data-nav="section-3">我是第三层</li>
+        <li data-nav="section-4">我是第四层</li>
+        <li data-nav="section-5">我是第五层</li>
     </ul>
 </div>
-<div class="h400 section-1">SECTION 1</div>
-<div class="h400 section-2">SECTION 2</div>
-<div class="h400 section-3">SECTION 3</div>
-<div class="h400 section-4">SECTION 4</div>
-<div class="h400 section-5">SECTION 5</div>
+
+<div class="h400 section-1">我是第一层</div><!-- 大块 -->
+<div class="h400 section-2">我是第二层</div>
+<div class="h400 section-3">我是第三层</div>
+<div class="h400 section-4">我是第四层</div>
+<div class="h400 section-5">我是第五层</div>
+
 <div class="navigator-right">
     <ul>
-        <li data-nav="section-1">SECTION 1</li>
-        <li data-nav="section-2">SECTION 2</li>
-        <li data-nav="section-3">SECTION 3</li>
-        <li data-nav="section-4">SECTION 4</li>
-        <li data-nav="section-5">SECTION 5</li>
+        <li data-nav="section-1">我是第一层</li><!-- 竖的 -->
+        <li data-nav="section-2">我是第二层</li>
+        <li data-nav="section-3">我是第三层</li>
+        <li data-nav="section-4">我是第四层</li>
+        <li data-nav="section-5">我是第五层</li>
     </ul>
 </div>
+
 <div class="h400">
-    <p>SECTION TOGGLE-LIST</p>
+    <p>部分开关</p>
     <dl class="toggle-list">
         <dt class="list-title">title</dt>
         <dd class="list-item">item</dd>
@@ -166,7 +170,7 @@
     </dl>
 </div>
 <div class="h400">
-    <p>SECTION CHECKOUT TAB</p>
+    <p>点击事件</p>
     <div class="checkout-tab">
         <div class="tab-item active">tab-1</div>
         <div class="tab-item">tab-2</div>
@@ -174,15 +178,16 @@
         <div class="tab-item">tab-4</div>
     </div>
     <div class="checkout-content">
-        <div class="tab-content active">content - 1</div>
-        <div class="tab-content">content - 2</div>
-        <div class="tab-content">content - 3</div>
-        <div class="tab-content">content - 4</div>
+        <div class="tab-content active">content - 1显示层</div>
+        <div class="tab-content">content - 2显示层</div>
+        <div class="tab-content">content - 3显示层</div>
+        <div class="tab-content">content - 4显示层</div>
     </div>
 </div>
 <div class="h400">SECTION Footer</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript">
-	const navInstance = {
+	const tmp = {
     data:{
         islock:false, // 锁
         timestamp:0,  // 事件执行的时间记录
@@ -194,12 +199,14 @@
     init:function(){
         this.bind(); //绑定事件
         this.resetSectionOffset();//重设高度
-        this.actionScrollEvent()  //触发设置事件（防止原地刷新不触发滚动）
+        this.dianji()  //触发设置事件（防止原地刷新不触发滚动）
     },
     bind:function(){
-        $('.navigator li').on('click',this.goScorll);// 点击导航
+        $('.navigator li').on('click',this.goScorll);// 点击导航   
         $('.navigator-right li').on('click',this.goScorll); // 点击右侧导航
+
         $(window).on('scroll',this.windowScroll);// 页面滚动
+
         $('.list-title').on('click',this.toggleList); //点击下拉标题
         $('.list-item').on('click',this.addItemActive); // 点击下拉标题内容项目
         $('.tab-item').on('click',this.checkoutTab); // 点击切换标签
@@ -210,18 +217,20 @@
         // 遍历获取其klass和距离文档顶部的距离（需要滑动多少）
         let sectionOffset = sectionKlass.map( klass => {
             return {
-                klass:klass,
+                klass:klass,//1、个体本身 2、
                 offsetTop: $(`.${klass}`).offset().top
             }
         })
         // 存储到data中，给其他用的地方调用
-        navInstance.data.sectionOffset = sectionOffset;
+        tmp.data.sectionOffset = sectionOffset;
     },
+
+    
     goScorll:function(){
         // 获取当前点击项目的 data-nav 里的值，为要跳转的 klass
         let klass = $(this).data('nav');
         // 获取导航的高度
-        let navigatorHeight = navInstance.data.navigatorHeight;
+        let navigatorHeight = tmp.data.navigatorHeight;
         // 计算要滚动到的实际高度，为要跳转的高度 - 固定导航的高度差
         let top = $(`.${klass}`).offset().top - navigatorHeight;
         // 动画调整，时间 500 毫秒
@@ -230,24 +239,24 @@
             scrollTop: top
         }, 500,function(){
             // 动画滚动结束，触发滚动要执行的事件，担心截流时候的最后一帧没有触发。
-            navInstance.actionScrollEvent();
+            tmp.actionScrollEvent();
         });
     },
     windowScroll:function(e){
         // 获取当前时间
         let timestampNow    = Date.now();
         // 再存储中获取上一次的时间
-        let timestampLast   = navInstance.data.timestamp;
+        let timestampLast   = tmp.data.timestamp;
         // 再存储中获取间隔时间
-        let timestampOffset = navInstance.data.timestampOffset;
+        let timestampOffset = tmp.data.timestampOffset;
         // 如果当前和上一次发生的时间对比
         let timeLock = (timestampNow - timestampLast ) > timestampOffset;
         // 如果大于间隔时间就执行，时间太短就不执行，是一个截流的操作
-        if(!navInstance.data.islock && timeLock){
+        if(!tmp.data.islock && timeLock){
             // 存储更新当前执行的时间戳
-            navInstance.data.timestamp = timestampNow;
+            tmp.data.timestamp = timestampNow;
             // 触发滚动要执行的事件
-            navInstance.actionScrollEvent();
+            tmp.actionScrollEvent();
         }
     },
     // 滚动要执行的事件
@@ -255,16 +264,16 @@
         // 获取当前滚动高度
         let scrollTop = $(window).scrollTop();
         // 开锁
-        navInstance.data.islock = false;
+        tmp.data.islock = false;
         // 导航定位
-        navInstance.toggleNavigatorFixed(scrollTop);
+        tmp.toggleNavigatorFixed(scrollTop);
         // 导航高亮
-        navInstance.hightlightNavigator(scrollTop);
+        tmp.hightlightNavigator(scrollTop);
     },
     // 导航定位
     toggleNavigatorFixed:function(scrollTop){
         // 获取当前滚动高度是否大于导航距离文档的高度（第一屏高度）
-        let shouldfixedTop = scrollTop > navInstance.data.bannerHeight;
+        let shouldfixedTop = scrollTop > tmp.data.bannerHeight;
         // 当前导航是否已经定位
         let hasfixedTop = $('.navigator').hasClass('fixed-top');
         // 如果滚动大于且没有定位
@@ -280,9 +289,9 @@
     // 导航高亮
     hightlightNavigator:function(scrollTop){
         // 获取导航的高度
-        let navigatorHeight = navInstance.data.navigatorHeight;
+        let navigatorHeight = tmp.data.navigatorHeight;
         // 获取所有模块的高度
-        let sectionOffset = navInstance.data.sectionOffset;
+        let sectionOffset = tmp.data.sectionOffset;
         // 看哪个class目前是最后一个超过滚动距离的
         let klass = '';
         sectionOffset.forEach( data => {
@@ -323,7 +332,7 @@
     }
 }
 
-navInstance.init();
+tmp.init();
 </script>
 
 </body>
